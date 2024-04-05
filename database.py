@@ -6,7 +6,7 @@ def createTable():
                     label TEXT NOT NULL,
                     description TEXT NOT NULL,
                     img TEXT)"""
-    con = sqlite3.connect('mysite/db.db')
+    con = sqlite3.connect('server/db.db')
     cur = con.cursor()
     cur.execute(command)
     con.close()
