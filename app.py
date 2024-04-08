@@ -34,6 +34,7 @@ def createLot():
     img.filename = sanitize_filename(img.filename)
     description = sanitize_filename(request.form['description'])
     label = sanitize_filename(request.form['label'])
+    user_id = request.form['user_id']
 
     currentDate = datetime.now()
     mark = int(currentDate.timestamp()*100000000)
@@ -50,8 +51,11 @@ def createLot():
     compressed_filename = os.path.splitext(filename)[0] + '.jpg'
     img.save(os.path.join("server/images/compressed", compressed_filename), format="JPEG", quality=50)
 
-    ### Создание строки в таблице бд
+    ### Создание записей в бд
     newLot = query('set', f"INSERT INTO lots (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'lots')
+    newBid = query('set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0]}', '{user_id}', '0')", 'bids')
+    print( newLot)
+    print( newBid)
 
     return jsonify({'creating new lot': 'success'})
 

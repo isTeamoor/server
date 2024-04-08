@@ -1,14 +1,22 @@
 import sqlite3
 
 def createTable():
-    command = """CREATE TABLE IF NOT EXISTS lots (
+    commands = ["""CREATE TABLE IF NOT EXISTS lots (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     label TEXT NOT NULL,
                     description TEXT NOT NULL,
-                    img TEXT)"""
+                    img TEXT)""",
+                """CREATE TABLE IF NOT EXISTS bids (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    lot_id INTEGER NOT NULL,
+                    user_id INTEGER NOT NULL,
+                    price INTEGER NOT NULL)""",
+                ]
     con = sqlite3.connect('server/db.db')
     cur = con.cursor()
-    cur.execute(command)
+    for command in commands:
+        cur.execute(command)
+    con.commit()
     con.close()
 
 
