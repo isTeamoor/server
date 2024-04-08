@@ -52,11 +52,13 @@ def createLot():
     img.save(os.path.join("server/images/compressed", compressed_filename), format="JPEG", quality=50)
 
     ### Создание записей в бд
-    command = 'set', f"INSERT INTO lots (label, description, img) VALUES ('{label}', '{description}', '{filename}')"
-    print(command)
-    """newLot = query(command, 'lots')
-    newBid = query('set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0]}', '{user_id}', '0')", 'bids')
+    newLot = query('set', f"INSERT INTO lots (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'lots')
     print( newLot)
+    command = 'set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0]}', '{user_id}', '0')"
+    print(command)
+    """
+    newBid = query(, 'bids')
+    
     print( newBid)"""
 
     return jsonify({'creating new lot': 'success'})
