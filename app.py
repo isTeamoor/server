@@ -54,7 +54,7 @@ def createLot():
     ### Создание записей в бд
     newLot = query('set', f"INSERT INTO lots (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'lots')
     print( newLot)
-    command = 'set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0]}', '{user_id}', '0')"
+    command = 'set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0][0]}', '{user_id}', '0')"
     print(command)
     """
     newBid = query(, 'bids')
