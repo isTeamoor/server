@@ -30,16 +30,15 @@ def hello():
 @app.route('/db/newLot', methods=['POST'])
 def createLot():
     img = request.files['img']
-
-    img.filename = sanitize_filename(img.filename)
+    img_name = sanitize_filename(img.filename)
     description = sanitize_filename(request.form['description'])
     label = sanitize_filename(request.form['label'])
     user_id = request.form['user_id']
 
     currentDate = datetime.now()
-    mark = int(currentDate.timestamp()*100000000)
+    mark = str(int(currentDate.timestamp()*100000000))
 
-    filename = os.path.splitext(img.filename)[0] + "-" + str(mark) + os.path.splitext(img.filename)[1]
+    filename = os.path.splitext(img_name)[0] + "-" + mark + os.path.splitext(img_name)[1]
 
     img.save(os.path.join("server/images", filename))
 
@@ -53,11 +52,8 @@ def createLot():
 
     ### Создание записей в бд
     newLot = query('set', f"INSERT INTO lots (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'lots')
-    newBid = query('set', f"INSERT INTO bids (lot_id, user_id, price) VALUES ('{newLot[0][0]}', '{user_id}', '0')", 'bids')
-    print(newLot)
-    print( newBid)
-
     return jsonify({'creating new lot': 'success'})
+
 
 @app.route('/db/allLots')
 def send_Lots():
@@ -91,6 +87,27 @@ def get_image(section, img):
 
 
     return send_file(img_path, mimetype='image/jpeg')
+
+
+@app.route('/db/newBid', methods=['POST'])
+def new_Bid():
+    data = request.json
+    print(data)
+    """
+    newBid = query('set', f"INSERT INTO bids (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'bids')
+    data = query('get', "SELECT * FROM lots")
+    response = []
+    for item in data:
+        lot = {
+            'id': item[0],
+            'label': item[1],
+            'description': item[2],
+            'bids': item[3],
+            'img': 'https://isteamoor1.pythonanywhere.com/db/get_image/' + item[3],
+        }
+        response.append(lot)"""
+    return jsonify({"gj": '1'})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
