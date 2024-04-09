@@ -10,7 +10,8 @@ def createTable():
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     lot_id INTEGER NOT NULL,
                     user_id INTEGER NOT NULL,
-                    price INTEGER NOT NULL)""",
+                    amount INTEGER NOT NULL,
+                    date TEXT NOT NULL)""",
                 ]
     con = sqlite3.connect('server/db.db')
     cur = con.cursor()

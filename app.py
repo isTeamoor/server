@@ -92,21 +92,24 @@ def get_image(section, img):
 @app.route('/db/newBid', methods=['POST'])
 def new_Bid():
     data = request.json
-    print(data)
-    """
-    newBid = query('set', f"INSERT INTO bids (label, description, img) VALUES ('{label}', '{description}', '{filename}')", 'bids')
-    data = query('get', "SELECT * FROM lots")
+    lot_id = data['lot_id']
+    user_id = data['user_id']
+    amount = data['amount']
+    date = data['date']
+    query('set', f"INSERT INTO bids (lot_id, user_id, amount, date) VALUES ('{lot_id}', '{user_id}', '{amount}', '{date}')", 'bids')
+
+    bids = query('get',f"SELECT * FROM bids WHERE lot_id = '{lot_id}'")
     response = []
-    for item in data:
-        lot = {
-            'id': item[0],
-            'label': item[1],
-            'description': item[2],
-            'bids': item[3],
-            'img': 'https://isteamoor1.pythonanywhere.com/db/get_image/' + item[3],
-        }
-        response.append(lot)"""
-    return jsonify({"gj": '1'})
+    for bid in bids:
+        response.append({
+            'id': bid[0],
+            'lot_id': bid[1],
+            'user_id': bid[2],
+            'amount': bid[3],
+            'date': bid[4]
+        })
+    return jsonify({'bids': response})
+
 
 
 if __name__ == "__main__":
